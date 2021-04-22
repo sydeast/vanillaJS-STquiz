@@ -65,13 +65,14 @@ function renderQuestion(){
     const ansBtns = document.getElementById('ansBtns')
     // compare answers in hereq
     ansBtns.addEventListener("click", function(e) {
-        if(e.returnValue === currentQuestion.answer){
-            availableQuestions = availableQuestions.filter(availableQuestions => availableQuestions !== questionIndex)
-            console.log(availableQuestions, "correct")
+        availableQuestions = availableQuestions.filter(availableQuestions => availableQuestions !== questionIndex)
+        if(e.target.value == currentQuestion.answer){
+
+            console.log(questionIndex, e.target.value, currentQuestion.answer)
             correctAnswer(e)
-        } else if (e.returnValue !== currentQuestion.answer) {
-            availableQuestions = availableQuestions.filter(availableQuestions => availableQuestions !== questionIndex)
-            console.log(availableQuestions, "Wrong")
+        } else if (e.target.value != currentQuestion.answer) {
+
+            console.log(questionIndex, e.target.value, currentQuestion.answer)
             incorrectAnswer(e)
         }
 
@@ -82,12 +83,12 @@ function renderQuestion(){
 
 function correctAnswer(e) {
 
-    renderQuestion(e)
+    renderQuestion()
 }
 
 function incorrectAnswer(e) {
 
-    renderQuestion(e)
+    renderQuestion()
 }
 
 
