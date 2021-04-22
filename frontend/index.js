@@ -1,4 +1,6 @@
 const startBtn = document.getElementById('startBtn')
+const hud = document.getElementById('hud')
+const gameBox = document.getElementById('game-container')
 const qBox = document.getElementById('quiz-container')
 const baseURL = "http://localhost:3000/questions"
 
@@ -7,8 +9,7 @@ let score = 0;
 const correctPoints = 10;
 
 
-//question stuff
-
+//question vars
 let availableQuestions = [];
 let questionIndex = "";
 let currentQuestion = {};
@@ -16,7 +17,7 @@ let currentQuestion = {};
 
 //game start
 startBtn.onclick = () => {
-    // alert('Game started!');
+    // set score
     score = 0;
 
     //change container to display instructions
@@ -26,23 +27,24 @@ startBtn.onclick = () => {
         <p>All questions are True/False. Click one answer to reveal the truth!</p>
         <button id="next-btn"> Next </button>
         <div> `
-
+    // add listener to Next button
     const nextBtn = document.getElementById('next-btn')
     nextBtn.addEventListener("click", handleClick);
 }
+// Fetch and Sort data and then render first question
 function handleClick(e){
     fetch(baseURL)
     .then(r => r.json())
     .then(dataSort)
 }
-
 function dataSort(arg){
     availableQuestions = arg["data"]
     renderQuestion()
+    // show score box
+    hud.classList.add('is-visible')
 }
 
-
-
+// Render questions
 function renderQuestion(){
     questionIndex = availableQuestions[Math.floor(Math.random() * availableQuestions.length)]
     currentQuestion = questionIndex.attributes

@@ -77,3 +77,21 @@ button:focus {
     background-color: #5e3370;
     outline: none;
 }
+
+.hud-class {
+    display: none;
+}
+.hud-class.is-visible {
+  display: flex;
+  justify-content: space-between;
+}
+
+.hud-prefix {
+  text-align: center;
+  font-size: 2rem;
+}
+
+.hud-main-text {
+  text-align: center;
+}
+
