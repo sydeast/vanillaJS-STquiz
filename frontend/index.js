@@ -120,7 +120,7 @@ function endQuiz() {
     qBox.innerHTML = `
         <div id="end-main">
             <h2>Stunning!! You completed the quiz!</h2>
-            <span> Final Score: ${score}</span>
+            <p> Final Score: ${score}</p>
         </div>
     `
 
