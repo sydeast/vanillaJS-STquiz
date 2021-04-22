@@ -20,4 +20,4 @@ questions = [
     }
 ]
 
-questions.each { |q| new_question = Question.new( content: q[:content], answer: q[:answer])}
+questions.each { |q| new_question = Question.create( content: q[:content], answer: q[:answer])}

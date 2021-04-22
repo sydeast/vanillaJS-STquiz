@@ -1,8 +1,8 @@
 class QuestionsController < ApplicationController
 
     def index
-        questions = Question.all
-        render json: QuestionSerializer.new(questions)
+        @questions = Question.all
+        render json: QuestionSerializer.new(@questions)
     end
 
     def show
@@ -28,3 +28,4 @@ class QuestionsController < ApplicationController
         params.require(:question).permit(:content, :answer)
     end
 end
+ 
