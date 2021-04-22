@@ -15,7 +15,7 @@ const correctPoints = 10;
 let availableQuestions = [];
 let questionIndex = "";
 let currentQuestion = {};
-const maxQuestion = 10;
+const maxQuestion = 5;
 
 
 //game start
@@ -47,6 +47,13 @@ function dataSort(arg){
     hud.classList.add('is-visible')
 }
 
+function checkCanStillPlay(){
+    availableQuestions.length == 0 || questionCounter >= maxQuestion ?
+     endQuiz() :
+    renderQuestion()
+}
+
+
 // Render questions
 function renderQuestion(){
     questionCounter ++;
@@ -77,6 +84,7 @@ function renderQuestion(){
         const userAnswer = e.target.value
 
         // NEEDS TO BE REFACTORED!!!!
+        //still gotta let user know if they got the answer rgt or wrg
         if(userAnswer === String(currentQuestion.answer)){
 
             console.log("correct", e.target.value, currentQuestion.answer)
@@ -93,23 +101,33 @@ function renderQuestion(){
 }
 
 // NEEDS TO BE REFACTORED!!!!
+//still gotta let user know if they got the answer rgt or wrg
 function correctAnswer(e) {
     score += correctPoints;
     scoreText.innerHTML = score;
-    renderQuestion()
+    checkCanStillPlay()
 }
 
 function incorrectAnswer(e) {
     score += 0;
     scoreText.innerHTML = score;
-    renderQuestion()
+    checkCanStillPlay()
+}
+
+//End the quiz
+function endQuiz() {
+    hud.classList.remove('is-visible')
+    qBox.innerHTML = `
+        <div id="end-main">
+            <h2>Stunning!! You completed the quiz!</h2>
+            <span> Final Score: ${score}</span>
+        </div>
+    `
+
 }
 
 
-//remove question from the bank
-// availableQuestions.splice(questionIndex, 1)
-//let user know if they got the answer rgt or wrg
-//move on to next question
+
 
 
 
