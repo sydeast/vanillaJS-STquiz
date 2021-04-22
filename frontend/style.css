@@ -84,14 +84,17 @@ button:focus {
 .hud-class.is-visible {
   display: flex;
   justify-content: space-between;
+
 }
 
 .hud-prefix {
   text-align: center;
   font-size: 2rem;
+   margin: 10px;
 }
 
 .hud-main-text {
   text-align: center;
+  margin: 10px;
 }
 

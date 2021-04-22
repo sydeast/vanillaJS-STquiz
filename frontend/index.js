@@ -1,8 +1,10 @@
-const startBtn = document.getElementById('startBtn')
-const hud = document.getElementById('hud')
-const gameBox = document.getElementById('game-container')
-const qBox = document.getElementById('quiz-container')
-const baseURL = "http://localhost:3000/questions"
+const startBtn = document.getElementById('startBtn');
+const hud = document.getElementById('hud');
+const gameBox = document.getElementById('game-container');
+const qBox = document.getElementById('quiz-container');
+const questionCounterText = document.getElementById('questionCounter');
+const scoreText = document.getElementById('score');
+const baseURL = "http://localhost:3000/questions";
 
 //scoring
 let score = 0;
@@ -13,13 +15,14 @@ const correctPoints = 10;
 let availableQuestions = [];
 let questionIndex = "";
 let currentQuestion = {};
+const maxQuestion = 10;
 
 
 //game start
 startBtn.onclick = () => {
     // set score
     score = 0;
-
+    questionCounter = 0;
     //change container to display instructions
     qBox.innerHTML = `
         <div id="question-box">
@@ -28,7 +31,7 @@ startBtn.onclick = () => {
         <button id="next-btn"> Next </button>
         <div> `
     // add listener to Next button
-    const nextBtn = document.getElementById('next-btn')
+    const nextBtn = document.getElementById('next-btn');
     nextBtn.addEventListener("click", handleClick);
 }
 // Fetch and Sort data and then render first question
@@ -46,8 +49,10 @@ function dataSort(arg){
 
 // Render questions
 function renderQuestion(){
-    questionIndex = availableQuestions[Math.floor(Math.random() * availableQuestions.length)]
-    currentQuestion = questionIndex.attributes
+    questionCounter ++;
+    questionCounterText.innerText = `${questionCounter}/${maxQuestion}`;
+    questionIndex = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
+    currentQuestion = questionIndex.attributes;
 
 
         qBox.innerHTML = `
@@ -69,14 +74,16 @@ function renderQuestion(){
     // compare answers in here
     ansBtns.addEventListener("click", function(e) {
         availableQuestions = availableQuestions.filter(availableQuestions => availableQuestions !== questionIndex)
-        const userAnswer = e.returnValue
-        if(userAnswer == currentQuestion.answer){
+        const userAnswer = e.target.value
 
-            console.log(questionIndex, e.target.value, currentQuestion.answer)
+        // NEEDS TO BE REFACTORED!!!!
+        if(userAnswer === String(currentQuestion.answer)){
+
+            console.log("correct", e.target.value, currentQuestion.answer)
             correctAnswer(e)
-        } else if (userAnswer != currentQuestion.answer) {
+        } else if (userAnswer !== String(currentQuestion.answer)) {
 
-            console.log(questionIndex, e.target.value, currentQuestion.answer)
+            console.log("incorrect", e.target.value, currentQuestion.answer)
             incorrectAnswer(e)
         }
 
@@ -85,13 +92,16 @@ function renderQuestion(){
 
 }
 
+// NEEDS TO BE REFACTORED!!!!
 function correctAnswer(e) {
-
+    score += correctPoints;
+    scoreText.innerHTML = score;
     renderQuestion()
 }
 
 function incorrectAnswer(e) {
-
+    score += 0;
+    scoreText.innerHTML = score;
     renderQuestion()
 }
 

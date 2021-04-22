@@ -15,9 +15,21 @@ questions = [
         answer: 0
     },
     {
-        content: "Was General Order 1 also known as the Prime Directive in Starfleet?",
+        content: "Is General Order 1 also known as the Prime Directive in Starfleet?",
         answer: 1
-    }
+    },
+    {
+        content: "Vulcan blood is blue in color.",
+        answer: 0
+    },
+    {
+        content: "Most meals are prepared by a nutrition staff onboard the U.S.S. Enterprise.",
+        answer: 0
+    },
+    {
+        content: "In Starfleet, planets are classified by letters to denote habitability. Is Earth known as a Class-M planet?",
+        answer: 1
+    },
 ]
 
 questions.each { |q| new_question = Question.create( content: q[:content], answer: q[:answer])}
