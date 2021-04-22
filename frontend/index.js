@@ -44,9 +44,6 @@ function dataSort(arg){
 
 
 function renderQuestion(){
-    // availableQuestions = arg["data"]
-    // const questionIndex = availableQuestions[Math.floor(Math.random() * availableQuestions.length)]
-    // currentQuestion = questionIndex.attributes
     questionIndex = availableQuestions[Math.floor(Math.random() * availableQuestions.length)]
     currentQuestion = questionIndex.attributes
 
@@ -54,23 +51,28 @@ function renderQuestion(){
         qBox.innerHTML = `
             <div class="question-content">
                 <p id="questCon">${currentQuestion.content}</p>
-                <div id="ansBtns">
+                <div id="ansBtns" class="answer-box">
+                    <div class="ans-choice">
                     <button id="true-btn" value="true">True</button>
+                    </div>
+                    <div class="ans-choice">
                     <button id="false-btn" value="false">False</button>
+                    </div>
                 </div>
             </div>
 
         `
 
     const ansBtns = document.getElementById('ansBtns')
-    // compare answers in hereq
+    // compare answers in here
     ansBtns.addEventListener("click", function(e) {
         availableQuestions = availableQuestions.filter(availableQuestions => availableQuestions !== questionIndex)
-        if(e.target.value == currentQuestion.answer){
+        const userAnswer = e.returnValue
+        if(userAnswer == currentQuestion.answer){
 
             console.log(questionIndex, e.target.value, currentQuestion.answer)
             correctAnswer(e)
-        } else if (e.target.value != currentQuestion.answer) {
+        } else if (userAnswer != currentQuestion.answer) {
 
             console.log(questionIndex, e.target.value, currentQuestion.answer)
             incorrectAnswer(e)
@@ -96,3 +98,6 @@ function incorrectAnswer(e) {
 // availableQuestions.splice(questionIndex, 1)
 //let user know if they got the answer rgt or wrg
 //move on to next question
+
+
+
