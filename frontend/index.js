@@ -10,7 +10,7 @@ const correctPoints = 10;
 //question stuff
 
 let availableQuestions = [];
-// const questionIndex = "";
+let questionIndex = "";
 let currentQuestion = {};
 
 
@@ -33,12 +33,21 @@ startBtn.onclick = () => {
 function handleClick(e){
     fetch(baseURL)
     .then(r => r.json())
-    .then(renderQuestion)
+    .then(dataSort)
 }
 
-function renderQuestion(arg){
+function dataSort(arg){
     availableQuestions = arg["data"]
-    const questionIndex = availableQuestions[Math.floor(Math.random() * availableQuestions.length)]
+    renderQuestion()
+}
+
+
+
+function renderQuestion(){
+    // availableQuestions = arg["data"]
+    // const questionIndex = availableQuestions[Math.floor(Math.random() * availableQuestions.length)]
+    // currentQuestion = questionIndex.attributes
+    questionIndex = availableQuestions[Math.floor(Math.random() * availableQuestions.length)]
     currentQuestion = questionIndex.attributes
 
 
@@ -57,11 +66,12 @@ function renderQuestion(arg){
     // compare answers in hereq
     ansBtns.addEventListener("click", function(e) {
         if(e.returnValue === currentQuestion.answer){
-            console.log(availableQuestions)
+            availableQuestions = availableQuestions.filter(availableQuestions => availableQuestions !== questionIndex)
+            console.log(availableQuestions, "correct")
             correctAnswer(e)
         } else if (e.returnValue !== currentQuestion.answer) {
-
-            console.log(availableQuestions)
+            availableQuestions = availableQuestions.filter(availableQuestions => availableQuestions !== questionIndex)
+            console.log(availableQuestions, "Wrong")
             incorrectAnswer(e)
         }
 
@@ -72,16 +82,16 @@ function renderQuestion(arg){
 
 function correctAnswer(e) {
 
-    handleClick(e)
+    renderQuestion(e)
 }
 
 function incorrectAnswer(e) {
 
-    handleClick(e)
+    renderQuestion(e)
 }
 
 
-// //remove question from the bank
+//remove question from the bank
 // availableQuestions.splice(questionIndex, 1)
-// //let user know if they got the answer rgt or wrg
-// //move on to next question
+//let user know if they got the answer rgt or wrg
+//move on to next question
