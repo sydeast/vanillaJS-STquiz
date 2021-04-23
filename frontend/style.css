@@ -13,6 +13,7 @@ body {
     font-family: "Poppins", sans-serif;
     margin: 0;
     min-height: 100vh;
+    text-align: center;
 }
 
 #quiz-container {
@@ -77,3 +78,24 @@ button:focus {
     background-color: #5e3370;
     outline: none;
 }
+
+.hud-class {
+    display: none;
+}
+.hud-class.is-visible {
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.hud-prefix {
+  text-align: center;
+  font-size: 2rem;
+   margin: 10px;
+}
+
+.hud-main-text {
+  text-align: center;
+  margin: 10px;
+}
+

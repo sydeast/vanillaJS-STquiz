@@ -10,17 +10,35 @@
 </head>
     <br>
     <body>
-        <div id="quiz-container">
-            <div class="question-main">
-                <h2>Star Trek Quiz!</h2>
-                <p> Come take the Star Trek quiz and put your trekkie skills to work!</p>
-            </div>
-            <div id="answer-main">
-            <div class="start-btn">
-                <button type="submit" id="startBtn">Start</button>
-            </div>
+        <div class="container justify-center flex-column">
+            <div id="game-container">
+                <div id="hud" class="hud-class">
+                    <div id="hud-item">
+                        <p class="hud-prefix">Question</p>
+                        <h1 class="hud-main-text" id="questionCounter"></h1>
+                    </div>
+                    <div id="hud-item">
+                        <p class="hud-prefix">Score</p>
+                        <h1 class="hud-main-text" id="score">0</h1>
+                    </div>
+                </div>
+                <div id="quiz-container">
+                    <div class="question-main">
+                        <h2>Star Trek Quiz!</h2>
+                        <p> Come take the Star Trek quiz and put your trekkie skills to work!</p>
+                    </div>
+                    <div id="answer-main">
+                        <div class="start-btn">
+                            <button type="submit" id="startBtn" onclick="startQuiz()">Start</button>
+                            <button type="submit" id="seeHighscoresBtn">See Highscores</button>
+                            <button type="submit" id="addNewQuestionBtn">Add a question!</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+        <script src="library.js"></script>
         <script src="index.js" type="text/javascript"></script>
     </body>
 </html>
+
