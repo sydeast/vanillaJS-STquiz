@@ -94,36 +94,25 @@ function renderQuestions(){
     ansBtns.addEventListener("click", function(e) {
         availableQuestions = availableQuestions.filter(availableQuestions => availableQuestions !== questionIndex)
         const userAnswer = e.target.value
-
-        // NEEDS TO BE REFACTORED!!!!
         //still gotta let user know if they got the answer rgt or wrg
         if(userAnswer === String(currentQuestion.answer)){
+            addToScore(correctPoints)
 
-            console.log("correct", e.target.value, currentQuestion.answer)
-            correctAnswer(e)
         } else if (userAnswer !== String(currentQuestion.answer)) {
-
-            console.log("incorrect", e.target.value, currentQuestion.answer)
-            incorrectAnswer(e)
+            addToScore(0)
         }
 
     })
 
 
 }
-
-// THESE TWO NEEDS TO BE REFACTORED!!!!
 //still gotta let user know if they got the answer rgt or wrg
-function correctAnswer(e) {
-    score += correctPoints;
+function addToScore(e) {
+    score += e;
     scoreText.innerHTML = score;
     checkCanStillPlay()
 }
-function incorrectAnswer(e) {
-    score += 0;
-    scoreText.innerHTML = score;
-    checkCanStillPlay()
-}
+
 
 //Ending the quiz
 function endQuiz() {
@@ -381,6 +370,6 @@ function deleteQuestion(_e){
 
 
 
-function home(){
+function home(e){
     location.reload();
 }
