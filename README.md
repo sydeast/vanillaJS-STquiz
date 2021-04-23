@@ -31,7 +31,7 @@ Personal:
 $ rails db:migration
 ```
 
-Now start your local server to access the site in your web browser
+Now start your local server to access the data from the api
 ```
 $ rails s
 ```
