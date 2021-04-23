@@ -7,7 +7,7 @@ COD: (https://github.com/sydeast/vanillaJS-STquiz/blob/main/code_of_conduct.md)
 
  Flatiron JS Assessment project - Star Trek Quiz
 
-This is a Star Trek themed trivia single page application using a built-in RAILS API. The webapp will navigate users through trivia questions where they can complete for the highest score on the leaderboard. Mostly built to be flushed out to include other quizzes, this app main js file (index.js) is reusable over and over again with only minor changes needed for variable changes. Questions can be seed via the API.
+This is a Star Trek themed trivia single page application using a built-in RAILS API. The webapp will navigate users through trivia questions where they can complete for the highest score on the leaderboard. Mostly built to be flushed out to include other quizzes, this app main js file (index.js) is reusable over and over again with only minor changes needed for variable and FETCH URL needs. Questions can be seeded via the API.
 
 ## Tools
 Built using Ruby on Rails 6.1.3, VanillaJS, and FastJSONapi. The database is still sqlite; however, there are future plans to move this project to Heroku; therefore, the DB will change to postgreSQL soon. Check the Gemfile and Gemlock for more tooling information.
