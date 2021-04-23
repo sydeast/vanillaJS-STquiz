@@ -4,7 +4,8 @@ const gameBox = document.getElementById('game-container');
 const qBox = document.getElementById('quiz-container');
 const questionCounterText = document.getElementById('questionCounter');
 const scoreText = document.getElementById('score');
-const baseURL = "http://localhost:3000/questions";
+const baseURL = "http://localhost:3000/quizzes/1/questions";
+const quizID = 1;
 
 //scoring
 let score = 0;
@@ -49,7 +50,7 @@ function dataSort(arg){
 
 function checkCanStillPlay(){
     availableQuestions.length == 0 || questionCounter >= maxQuestion ?
-     endQuiz() :
+    endQuiz() :
     renderQuestion()
 }
 
@@ -120,10 +121,58 @@ function endQuiz() {
     qBox.innerHTML = `
         <div id="end-main">
             <h2>Stunning!! You completed the quiz!</h2>
-            <p> Final Score: ${score}</p>
+            <p id="${score}"> Final Score: ${score}</p>
+        </div >
+        <div id="enter-highscore">
+        <form>
+            <p> Enter your name to save your highscore now!
+            <input type="text" name="nameInput" id="nameInput" placeholder="Enter Your Name Here"/>
+            <input type="submit" class="btn" id="saveScoreBtn" value="Save" disabled/>
+            <button type="submit" class="btn" id="seeHighscoresBtn" >See Highscores</button>
+            <button type="submit" class="btn" id="playAgainBtn">Play Again?</button>
+            <button type="submit" class="btn" id="addNewQuestion">Add a question!</button>
+        </form>
+    `
+    //Disable the Save Name button until text is added
+    const nameInput = document.getElementById('nameInput')
+    const saveScoreBtn = document.getElementById('saveScoreBtn')
+
+    nameInput.addEventListener('keyup', () => {
+        saveScoreBtn.disabled = !nameInput.value;
+        saveScoreBtn.onclick = (e) => {
+        e.preventDefault();
+
+        //Gather Highscore data and POST
+        const highscoreInfo = {
+            name: nameInput.value,
+            score: score,
+            // quiz_id: quizID
+        }
+        const configObj = {
+            method: 'POST',
+            headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+        },
+        body: JSON.stringify(highscoreInfo)
+        }
+        //Save Highscore list and send user to the Highscore list
+        fetch('http://localhost:3000/quizzes/1/highscores', configObj)
+        .then(r => r.json())
+        .then(seeHighscores)
+
+    }
+    })
+
+}
+
+function seeHighscores(){
+    const li = document.createElement('li')
+    li.innerHTML = `
+        <div>
+            <p>something</p>
         </div>
     `
-
 }
 
 

@@ -49,3 +49,24 @@ questions.each { |q|
         quizSet = Quiz.find_by(title: q[:quiz])
         quizSet.questions << new_question
 }
+
+
+highscores_seed = [
+    {
+        name: "Samus",
+        score: 80,
+        quiz_id: 1
+    },
+    {
+        name: "Rikku",
+        score: 60,
+        quiz_id: 1
+    },
+    {
+        name: "T.N.B.",
+        score: 110,
+        quiz_id: 1
+    }
+]
+
+highscores_seed.each { |h| newHighscores = Highscore.create( name: h[:name], score: h[:score], quiz_id: h[:quiz_id] )}

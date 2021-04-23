@@ -1,7 +1,8 @@
 class QuizzesController < ApplicationController
     def index
-        @quizes = Quiz.all
-        render json: QuizSerializer.new(@quizes)
+        quizzes = Quiz.all
+        options = {include: [:questions]}
+        render json: QuizSerializer.new(quizzes)
     end
 
     def show
@@ -14,7 +15,7 @@ class QuizzesController < ApplicationController
         if quiz.save
             render json: QuizSerializer.new(quiz)
         else
-            render json: {error: "Could not save/create"}
+            render json: {error: "Could not save/create Quiz"}
         end
     end
 
