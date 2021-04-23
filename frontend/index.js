@@ -94,36 +94,25 @@ function renderQuestions(){
     ansBtns.addEventListener("click", function(e) {
         availableQuestions = availableQuestions.filter(availableQuestions => availableQuestions !== questionIndex)
         const userAnswer = e.target.value
-
-        // NEEDS TO BE REFACTORED!!!!
         //still gotta let user know if they got the answer rgt or wrg
         if(userAnswer === String(currentQuestion.answer)){
+            addToScore(correctPoints)
 
-            console.log("correct", e.target.value, currentQuestion.answer)
-            correctAnswer(e)
         } else if (userAnswer !== String(currentQuestion.answer)) {
-
-            console.log("incorrect", e.target.value, currentQuestion.answer)
-            incorrectAnswer(e)
+            addToScore(0)
         }
 
     })
 
 
 }
-
-// THESE TWO NEEDS TO BE REFACTORED!!!!
 //still gotta let user know if they got the answer rgt or wrg
-function correctAnswer(e) {
-    score += correctPoints;
+function addToScore(e) {
+    score += e;
     scoreText.innerHTML = score;
     checkCanStillPlay()
 }
-function incorrectAnswer(e) {
-    score += 0;
-    scoreText.innerHTML = score;
-    checkCanStillPlay()
-}
+
 
 //Ending the quiz
 function endQuiz() {
@@ -228,6 +217,7 @@ function addQuestion() {
            <input type="number" name="answer" id="question-answer" defaultValue="0" min="0" max="1" required><br><br>
            <button type="submit" id="createQuestionBtn" value="Create">Create</button>
         </form>
+        <button type="submit" id="home" onclick="home()">Return Home</button>
         </div>
     `
 
@@ -259,6 +249,7 @@ function saveQuestion(_e){
     fetch('http://localhost:3000/quizzes/1/questions', configObj)
         .then(r => r.json())
         .then(json => fetchQuestion(json.data))
+        .then(window.alert("Your question has been saved!"))
         .catch(error => window.alert("Opps, Looks like something is not quite right. Please check the fields and try again!"))
         .finally(() => this.reload) //Not sure if I need?
 }
@@ -278,7 +269,7 @@ function renderQuestion(arg){
     qBox.innerHTML = `
         <div id="questRender" data-id="${arg.id}">
         <h4>Here is your trivia question! </h4>
-        <p>Would you like edit or delete it? This will be the only time to do so.</p>
+        <p>Would you like edit or delete it? This will be the only time to do so. Otherwise, please return home to see it in action!</p>
         <span>Question/Trivia: ${questContent}</span>
         <br>
         <span>Answer: ${questAnswer}</span>
@@ -286,6 +277,7 @@ function renderQuestion(arg){
         <div id="btns">
         <button class="edit" data-id="${arg.id}">Edit</button>
         <button class="delete" data-id="${arg.id}">Delete</button>
+        <button type="submit" id="home" onclick="home()">Return Home</button>
         </div>
     `
     const selectBtns = document.getElementById('btns')
@@ -381,6 +373,6 @@ function deleteQuestion(_e){
 
 
 
-function home(){
+function home(e){
     location.reload();
 }
