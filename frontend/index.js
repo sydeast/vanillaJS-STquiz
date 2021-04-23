@@ -235,6 +235,7 @@ function addQuestion() {
 }
 
 function saveQuestion(_e){
+    _e.preventDefault()
     const contentInput = document.querySelector('#question-content')
     const answerInput = document.querySelector('#question-answer')
 
@@ -254,22 +255,70 @@ function saveQuestion(_e){
 
     fetch('http://localhost:3000/quizzes/1/questions', configObj)
         .then(r => r.json())
-        .then(getQuestion(e))
+        .then(json => fetchQuestion(json.data))
+}
+
+function fetchQuestion(arg){
+    const questID = arg.id
+
+    fetch(`http://localhost:3000/quizzes/1/questions/${questID}`)
+        .then(r => r.json())
+        .then(renderQuestion)
+}
+
+function renderQuestion(arg){
+    const questContent = arg.content;
+    const questAnswer = arg.answer;
+
+    qBox.innerHTML = `
+        <div id="questRender">
+        <h4>Here is your trivia question! </h4>
+        <p>Would you like edit or delete it? This will be the only time to do so.</p>
+        <span>Question/Trivia: ${questContent}</span>
+        <br>
+        <span>Answer: ${questAnswer}</span>
+        </div>
+        <div id="btns">
+        <button class="edit" data-id="${arg.id}">Edit</button>
+        <button class="delete" data-id="${arg.id}">Delete</button>
+        </div>
+    `
+    const selectBtns = document.getElementById('btns')
+    selectBtns.addEventListener('click', handleBtnClick)
+
+}
+
+function handleBtnClick(_e){
+        if(_e.target.innerText === "Edit"){
+        //change the button fom edit to save
+        _e.target.innerText = "Save"
+        //replace the div with different input tags
+        createEditFields(_e)
+    } else if (_e.target.innerText === "Delete") {
+        deleteItem(e)
+    } else if (_e.target.innerText === "Save"){
+        //change the button fom edit to save
+        _e.target.innerText = "Edit"
+        //save this info to the DB
+        //turn all input fields back to normal read only fields
+        saveUpdatedQuestion(_e.target)
     }
 
-// function getQuestion(e){
-//     fetch(`http://localhost:3000/quizzes/1/questions/${question.id}`)
-//     .then(r =>r.json())
-//     .then(j => {debugger})
+}
 
-// }
+function createEditFields(arg){
+    const questRender = document.getElementById('questRender')
+    const questContent = questRender.children[2].innerText
+    const questAnswer = questRender.children[4].innerText;
 
-// function displayQuestion(_e){
-//     debugger
-// }
-
-
-
-
-
-
+    questRender.innerHTML = `
+        <h4>Here is your trivia question! </h4>
+        <p>Would you like edit or delete it? This will be the only time to do so.</p>
+        <form id="question-form">
+        <label for="question-content">Question/Trivia:</label>
+        <input type="text-area" name="content" placeholder="${questContent}">
+        <label for="question-answer">Answer Key:</label>
+        <input type="number" name="answer" id="question-answer" placeholder="${questAnswer}" min="0" max="1" required>
+        </form>
+    `
+}
