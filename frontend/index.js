@@ -29,6 +29,8 @@ const maxQuestion = 5;
 seeHighscoresBtn.addEventListener('click', getHighscores)
 addNewQuestion.addEventListener('click', addQuestion)
 
+
+
 //game start
 startQuiz = () => {
     // set score
@@ -53,7 +55,7 @@ function handleClick(e){
 }
 function dataSort(arg){
     availableQuestions = arg["data"]
-    renderQuestion()
+    renderQuestions()
     // show score box
     hud.classList.add('is-visible')
 }
@@ -61,11 +63,11 @@ function dataSort(arg){
 function checkCanStillPlay(){
     availableQuestions.length == 0 || questionCounter >= maxQuestion ?
     endQuiz() :
-    renderQuestion()
+    renderQuestions()
 }
 
 // Render questions
-function renderQuestion(){
+function renderQuestions(){
     questionCounter ++;
     questionCounterText.innerText = `${questionCounter}/${maxQuestion}`;
     questionIndex = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
@@ -263,15 +265,15 @@ function fetchQuestion(arg){
 
     fetch(`http://localhost:3000/quizzes/1/questions/${questID}`)
         .then(r => r.json())
-        .then(renderQuestion)
+        .then(renderNewQuestion(arg))
 }
 
-function renderQuestion(arg){
+function renderNewQuestion(arg){
     const questContent = arg.content;
     const questAnswer = arg.answer;
 
     qBox.innerHTML = `
-        <div id="questRender">
+        <div id="questRender" data-id="${arg.id}">
         <h4>Here is your trivia question! </h4>
         <p>Would you like edit or delete it? This will be the only time to do so.</p>
         <span>Question/Trivia: ${questContent}</span>
@@ -295,7 +297,7 @@ function handleBtnClick(_e){
         //replace the div with different input tags
         createEditFields(_e)
     } else if (_e.target.innerText === "Delete") {
-        deleteItem(e)
+        deleteQuestion(_e)
     } else if (_e.target.innerText === "Save"){
         //change the button fom edit to save
         _e.target.innerText = "Edit"
@@ -316,9 +318,63 @@ function createEditFields(arg){
         <p>Would you like edit or delete it? This will be the only time to do so.</p>
         <form id="question-form">
         <label for="question-content">Question/Trivia:</label>
-        <input type="text-area" name="content" placeholder="${questContent}">
+        <input type="text-area" id="edit-question-content" name="content" placeholder="${questContent}">
         <label for="question-answer">Answer Key:</label>
-        <input type="number" name="answer" id="question-answer" placeholder="${questAnswer}" min="0" max="1" required>
+        <input type="number" name="answer" id="edit-question-answer" placeholder="${questAnswer}" min="0" max="1" required>
         </form>
     `
+}
+
+function saveUpdatedQuestion(_e) {
+    const editQuestionInput = document.querySelector('#edit-question-content')
+    const editAnswernswerInput = document.querySelector('#edit-question-answer')
+
+    const questionInfo = {
+        content: editQuestionInput.value,
+        answer: editAnswernswerInput.value
+    }
+
+    const configObj = {
+        method: 'PATCH',
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+        },
+        body: JSON.stringify(questionInfo)
+    }
+
+    fetch(`http://localhost:3000/quizzes/1/questions/${questRender.dataset.id}`, configObj)
+        .then(r => r.json())
+        .then(home)
+}
+
+
+function deleteQuestion(_e){
+    const questRender = document.getElementById('questRender')
+    // questRender.dataset.id
+
+    // const configObj = {
+    //     method: 'DELETE',
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //         Accept: "application/json"
+    //     },
+
+    // }
+
+    // fetch(`http://localhost:3000/quizzes/1/questions/${questRender.dataset.id}`, configObj)
+    //     .then(r => r.json())
+    //     .then(j => alert(j.message))
+    //     .then(home)
+
+    const deleteNewQuestion = new DeleteQuestion;
+    deleteNewQuestion.delete(`http://localhost:3000/quizzes/1/questions/${questRender.dataset.id}`)
+        .then(home())
+}
+
+
+
+
+function home(){
+    location.reload();
 }

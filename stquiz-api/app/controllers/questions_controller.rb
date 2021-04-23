@@ -21,12 +21,26 @@ class QuestionsController < ApplicationController
         end
     end
 
+    def update
+        question = Question.find_by_id(params[:id])
+        if question.update(question_params)
+             render json: QuestionSerializer.new(question)
+        else
+            render json: {error: "Could not save question"}
+        end
+    end
+
+    def destroy
+        question = Question.find(params[:id])
+        question.destroy
+        render json: {message: "Successfully deleted #{question.content}"}
+    end
 
 
 
     private
 
     def question_params
-        params.require(:question).permit(:content, :answer, )
+        params.require(:question).permit(:content, :answer )
     end
 end
