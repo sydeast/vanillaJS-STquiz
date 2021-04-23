@@ -1,4 +1,5 @@
 const startBtn = document.getElementById('startBtn');
+const seeHighscoresBtn = document.getElementById('seeHighscoresBtn')
 const hud = document.getElementById('hud');
 const gameBox = document.getElementById('game-container');
 const qBox = document.getElementById('quiz-container');
@@ -18,9 +19,10 @@ let questionIndex = "";
 let currentQuestion = {};
 const maxQuestion = 5;
 
+seeHighscoresBtn.addEventListener('click', getHighscores)
 
 //game start
-startBtn.onclick = () => {
+startQuiz = () => {
     // set score
     score = 0;
     questionCounter = 0;
@@ -128,7 +130,6 @@ function endQuiz() {
             <p> Enter your name to save your highscore now!
             <input type="text" name="nameInput" id="nameInput" placeholder="Enter Your Name Here"/>
             <input type="submit" class="btn" id="saveScoreBtn" value="Save" disabled/>
-            <button type="submit" class="btn" id="seeHighscoresBtn" >See Highscores</button>
             <button type="submit" class="btn" id="playAgainBtn">Play Again?</button>
             <button type="submit" class="btn" id="addNewQuestion">Add a question!</button>
         </form>
@@ -159,21 +160,46 @@ function endQuiz() {
         //Save Highscore list and send user to the Highscore list
         fetch('http://localhost:3000/quizzes/1/highscores', configObj)
         .then(r => r.json())
-        .then(seeHighscores)
+        .then(getHighscores)
 
     }
     })
-
 }
 
-function seeHighscores(){
-    const li = document.createElement('li')
-    li.innerHTML = `
-        <div>
-            <p>something</p>
+function getHighscores(e){
+    fetch('http://localhost:3000/quizzes/1/highscores')
+        .then(r =>r.json())
+        .then(renderHighscores)
+}
+
+function renderHighscores(arg){
+   const highscoreItems = arg["data"]
+    qBox.innerHTML = `
+        <div id="highscores">
+            <span>Try your luck: <button type="submit" id="playBtn">Click Me and Play the Star Trek Quiz</button></span>
+            <h2>HIGHSCORES</h2>
+            <p>How well did you do?</p>
+            <br>
+            <ol id="score-list">
+            </ol>
+        <button>
         </div>
     `
+    const scoreList = document.getElementById('score-list')
+
+    highscoreItems.forEach(element => {
+        const li = document.createElement('li')
+        li.innerHTML = `
+            <span>${element.attributes.score}pts - ${element.attributes.name}</span>
+        `
+        scoreList.appendChild(li)
+    })
+
+    const playBtn = document.getElementById('playBtn')
+    playBtn.addEventListener('click', startQuiz)
 }
+
+
 
 
 
