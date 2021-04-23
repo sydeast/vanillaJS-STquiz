@@ -40,7 +40,7 @@ startQuiz = () => {
     qBox.innerHTML = `
         <div id="question-box">
         <h3 class="text-center">buy’ ngop (That's good news!)</h3>
-        <p>All questions are True/False. Click one answer to reveal the truth!</p>
+        <p>All questions are True/False. Click an answer to score points and progress through the quiz! In the end, add you name to the Highscores list. Where will you rank? Click Next to begin!</p>
         <button id="next-btn"> Next </button>
         <div> `
     // add listener to Next button
@@ -188,10 +188,10 @@ function renderHighscores(arg){
    const highscoreItems = arg["data"]
     qBox.innerHTML = `
         <div id="highscores">
-            <span>Try your luck: <button type="submit" id="playBtn">Click Me and Play the Star Trek Quiz</button></span>
-            <h2>HIGHSCORES</h2>
+            <span>Try your luck or Head Home: <button type="submit" id="playBtn">Click Me and Play the Star Trek Quiz</button></span>
+            <span><button type="submit" id="homeBtn" onclick="home()">Go Back to Homepage</button></span>
+            <h2>Leaderboard</h2>
             <p>How well did you do?</p>
-            <br>
             <ol id="score-list">
             </ol>
         <button>
@@ -259,6 +259,8 @@ function saveQuestion(_e){
     fetch('http://localhost:3000/quizzes/1/questions', configObj)
         .then(r => r.json())
         .then(json => fetchQuestion(json.data))
+        .catch(error => window.alert("Opps, Looks like something is not quite right. Please check the fields and try again!"))
+        .finally(() => this.reload) //Not sure if I need?
 }
 
 function fetchQuestion(arg){
@@ -347,6 +349,9 @@ function saveUpdatedQuestion(_e) {
     fetch(`http://localhost:3000/quizzes/1/questions/${questRender.dataset.id}`, configObj)
         .then(r => r.json())
         .then(home)
+        .catch(error => window.alert("Opps, Looks like something is not quite right. Please check the fields and try again!"))
+        .finally(() => this.reload) //Not sure if I need?
+
 }
 
 
