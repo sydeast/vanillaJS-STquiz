@@ -51,4 +51,5 @@ Currently this project is an assignment for my course. Once completed, the proje
 * User Logins
 * Edit your quizzes and questions beyond creation (when user auth is avaible)
 * Image based questions
+* Update answers with popup/change with the correct answer
 
