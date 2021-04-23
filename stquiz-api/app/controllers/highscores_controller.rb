@@ -1,7 +1,7 @@
 class HighscoresController < ApplicationController
     def index
-        @highscores = Highscore.all
-        render json: HighscoreSerializer.new(@highscores)
+        highscores = Highscore.all
+        render json: HighscoreSerializer.new(highscores)
     end
 
     def show
