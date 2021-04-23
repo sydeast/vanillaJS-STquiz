@@ -1,13 +1,17 @@
 const startBtn = document.getElementById('startBtn');
 const seeHighscoresBtn = document.getElementById('seeHighscoresBtn')
-const hud = document.getElementById('hud');
+const addNewQuestion = document.getElementById('addNewQuestionBtn')
+
 const gameBox = document.getElementById('game-container');
 const qBox = document.getElementById('quiz-container');
+
+const hud = document.getElementById('hud');
 const questionCounterText = document.getElementById('questionCounter');
 const scoreText = document.getElementById('score');
-const baseURL = "http://localhost:3000/quizzes/1/questions";
+
 const quizID = 1;
 
+const baseURL = "http://localhost:3000/quizzes/1/questions";
 //scoring
 let score = 0;
 const correctPoints = 10;
@@ -19,7 +23,11 @@ let questionIndex = "";
 let currentQuestion = {};
 const maxQuestion = 5;
 
+
+
+//Listeners for other than start
 seeHighscoresBtn.addEventListener('click', getHighscores)
+addNewQuestion.addEventListener('click', addQuestion)
 
 //game start
 startQuiz = () => {
@@ -55,7 +63,6 @@ function checkCanStillPlay(){
     endQuiz() :
     renderQuestion()
 }
-
 
 // Render questions
 function renderQuestion(){
@@ -103,21 +110,20 @@ function renderQuestion(){
 
 }
 
-// NEEDS TO BE REFACTORED!!!!
+// THESE TWO NEEDS TO BE REFACTORED!!!!
 //still gotta let user know if they got the answer rgt or wrg
 function correctAnswer(e) {
     score += correctPoints;
     scoreText.innerHTML = score;
     checkCanStillPlay()
 }
-
 function incorrectAnswer(e) {
     score += 0;
     scoreText.innerHTML = score;
     checkCanStillPlay()
 }
 
-//End the quiz
+//Ending the quiz
 function endQuiz() {
     hud.classList.remove('is-visible')
     qBox.innerHTML = `
@@ -129,9 +135,9 @@ function endQuiz() {
         <form>
             <p> Enter your name to save your highscore now!
             <input type="text" name="nameInput" id="nameInput" placeholder="Enter Your Name Here"/>
-            <input type="submit" class="btn" id="saveScoreBtn" value="Save" disabled/>
-            <button type="submit" class="btn" id="playAgainBtn">Play Again?</button>
-            <button type="submit" class="btn" id="addNewQuestion">Add a question!</button>
+            <input type="submit" id="saveScoreBtn" value="Save" disabled/>
+            <button type="submit" id="playAgainBtn">Play Again?</button>
+
         </form>
     `
     //Disable the Save Name button until text is added
@@ -164,14 +170,17 @@ function endQuiz() {
 
     }
     })
-}
 
+
+}
+//retrieve high scores
 function getHighscores(e){
     fetch('http://localhost:3000/quizzes/1/highscores')
         .then(r =>r.json())
         .then(renderHighscores)
 }
 
+//display highscores
 function renderHighscores(arg){
    const highscoreItems = arg["data"]
     qBox.innerHTML = `
@@ -199,7 +208,65 @@ function renderHighscores(arg){
     playBtn.addEventListener('click', startQuiz)
 }
 
+//
+function addQuestion() {
 
+    qBox.innerHTML = `
+        <div id="addQuestionForm">
+        <h3>Welcome to the our New Trivia Question form!</h3>
+        <p>Instructions: </p>
+        <p>1) The question must be related to Star Trek Universe in relation to its Film and Television canon, and it should be formatted in true/false statements. </p>
+        <p>2) The answer field only takes integars. Zero (0) means False and One (1) means True. </p>
+        <p>3) Have fun!</p>
+        <form id="question-form">
+           <label for="question-content">Question/Trivia:</label>
+           <input type="text-area" name="content" id="question-content" required><br><br>
+           <label for="question-answer">Answer Key:</label>
+           <input type="number" name="answer" id="question-answer" defaultValue="0" min="0" max="1" required><br><br>
+           <button type="submit" id="createQuestionBtn" value="Create">Create</button>
+        </form>
+        </div>
+    `
+
+    const createQuestion = document.getElementById('createQuestionBtn')
+    createQuestion.addEventListener('click', saveQuestion)
+
+
+}
+
+function saveQuestion(_e){
+    const contentInput = document.querySelector('#question-content')
+    const answerInput = document.querySelector('#question-answer')
+
+    const questionInfo = {
+        content: contentInput.value,
+        answer: answerInput.value
+    }
+
+    const configObj = {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+        },
+        body: JSON.stringify(questionInfo)
+    }
+
+    fetch('http://localhost:3000/quizzes/1/questions', configObj)
+        .then(r => r.json())
+        .then(getQuestion(e))
+    }
+
+// function getQuestion(e){
+//     fetch(`http://localhost:3000/quizzes/1/questions/${question.id}`)
+//     .then(r =>r.json())
+//     .then(j => {debugger})
+
+// }
+
+// function displayQuestion(_e){
+//     debugger
+// }
 
 
 
