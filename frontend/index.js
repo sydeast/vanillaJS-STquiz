@@ -139,6 +139,7 @@ function endQuiz() {
             <input type="text" name="nameInput" id="nameInput" placeholder="Enter Your Name Here"/>
             <input type="submit" id="saveScoreBtn" value="Save" disabled/>
             <button type="submit" id="playAgainBtn">Play Again?</button>
+            <button type="submit" id="home" onclick="home()">Homepage</button>
 
         </form>
     `
@@ -265,12 +266,12 @@ function fetchQuestion(arg){
 
     fetch(`http://localhost:3000/quizzes/1/questions/${questID}`)
         .then(r => r.json())
-        .then(renderNewQuestion(arg))
+        .then(renderQuestion(arg))
 }
 
-function renderNewQuestion(arg){
-    const questContent = arg.content;
-    const questAnswer = arg.answer;
+function renderQuestion(arg){
+    const questContent = arg.attributes.content;
+    const questAnswer = arg.attributes.answer;
 
     qBox.innerHTML = `
         <div id="questRender" data-id="${arg.id}">
