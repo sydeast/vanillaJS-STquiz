@@ -128,7 +128,7 @@ function endQuiz() {
             <input type="text" name="nameInput" id="nameInput" placeholder="Enter Your Name Here"/>
             <input type="submit" id="saveScoreBtn" value="Save" disabled/>
             <button type="submit" id="playAgainBtn">Play Again?</button>
-            <button type="submit" id="home" onclick="home()">Homepage</button>
+            <button type="button" id="home" onclick="goHome()">Homepage</button>
 
         </form>
     `
@@ -178,7 +178,7 @@ function renderHighscores(arg){
     qBox.innerHTML = `
         <div id="highscores">
             <span>Try your luck or Head Home: <button type="submit" id="playBtn">Click Me and Play the Star Trek Quiz</button></span>
-            <span><button type="submit" id="homeBtn" onclick="home()">Go Back to Homepage</button></span>
+            <span><button type="submit" id="homeBtn" onclick="goHome()">Go Back to Homepage</button></span>
             <h2>Leaderboard</h2>
             <p>How well did you do?</p>
             <ol id="score-list">
@@ -217,7 +217,7 @@ function addQuestion() {
            <input type="number" name="answer" id="question-answer" defaultValue="0" min="0" max="1" required><br><br>
            <button type="submit" id="createQuestionBtn" value="Create">Create</button>
         </form>
-        <button type="submit" id="home" onclick="home()">Return Home</button>
+        <button type="submit" id="home" onclick="goHome()">Return Home</button>
         </div>
     `
 
@@ -277,7 +277,7 @@ function renderQuestion(arg){
         <div id="btns">
         <button class="edit" data-id="${arg.id}">Edit</button>
         <button class="delete" data-id="${arg.id}">Delete</button>
-        <button type="submit" id="home" onclick="home()">Return Home</button>
+        <button type="submit" id="home" onclick="goHome()">Return Home</button>
         </div>
     `
     const selectBtns = document.getElementById('btns')
@@ -367,12 +367,12 @@ function deleteQuestion(_e){
 
     const deleteNewQuestion = new DeleteQuestion;
     deleteNewQuestion.delete(`http://localhost:3000/quizzes/1/questions/${questRender.dataset.id}`)
-        .then(home())
+        .then(goHome())
 }
 
 
 
 
-function home(e){
-    location.reload();
+function goHome(){
+    new HomeNavigation
 }
