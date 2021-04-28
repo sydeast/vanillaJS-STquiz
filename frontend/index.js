@@ -7,7 +7,7 @@ const qBox = document.getElementById('quiz-container');
 
 const hud = document.getElementById('hud');
 const questionCounterText = document.getElementById('questionCounter');
-const scoreText = document.getElementById('score');
+const scoreText = document.getElementById('score-count');
 
 const quizID = 1;
 
@@ -160,9 +160,11 @@ function endQuiz() {
         .then(r => r.json())
         // .then(getHighscores)
         .then(highscore => {
+            new Leaderboard
             const scoreData = highscore.data
             new Highscore(scoreData) //Adds new highscore to scorelist
         })
+        .then(getHighscores)
 
     }
     })
@@ -171,47 +173,24 @@ function endQuiz() {
 }
 //retrieve high scores
 function getHighscores(e){
+    new Leaderboard
     fetch('http://localhost:3000/quizzes/1/highscores')
         .then(r =>r.json())
         // .then(renderHighscores)
         .then(scores => {
-
             scores.data.forEach(
                 item => {
-                    // console.log(item, item.attributes)
-                    let newScore = new Highscore(item, item.attributes)
-                    renderHighscores()
+                    // console.log(item)
+                    let scores = new Highscore(item)
+                    document.querySelector('#score-list').append(scores.buildLi())
+                    // renderHighscores()
                 }
             )
-        })
+    })
 }
 
 //display highscores
 function renderHighscores(arg){
-//    const highscoreItems = arg["data"]
-    // qBox.innerHTML = `
-    //     <div id="highscores">
-    //         <span>Try your luck or Head Home: <button type="submit" id="playBtn">Click Me and Play the Star Trek Quiz</button></span>
-    //         <span><button type="submit" id="homeBtn" onclick="goHome()">Go Back to Homepage</button></span>
-    //         <h2>Leaderboard</h2>
-    //         <p>How well did you do?</p>
-    //         <ol id="score-list">
-    //         </ol>
-    //     <button>
-    //     </div>
-    // `
-    // const scoreList = document.getElementById('score-list')
-
-    // highscoreItems.forEach(element => {
-    //     const li = document.createElement('li')
-    //     li.innerHTML = `
-    //         <span>${element.attributes.score}pts - ${element.attributes.name}</span>
-    //     `
-    //     scoreList.appendChild(li)
-    // })
-
-    // const playBtn = document.getElementById('playBtn')
-    // playBtn.addEventListener('click', startQuiz)
     new Highscore
 }
 
@@ -380,7 +359,7 @@ function deleteQuestion(_e){
     //     .then(j => alert(j.message))
     //     .then(home)
 
-    const deleteNewQuestion = new DeleteQuestion;
+    const deleteNewQuestion = new Delete;
     deleteNewQuestion.delete(`http://localhost:3000/quizzes/1/questions/${questRender.dataset.id}`)
         .then(goHome())
 }
