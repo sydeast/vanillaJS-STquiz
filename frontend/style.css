@@ -79,6 +79,15 @@ button:focus {
     outline: none;
 }
 
+/* #highscores {
+    display: none;
+}
+#highscores.is-visible {
+  display: inline;
+
+} */
+
+
 .hud-class {
     display: none;
 }

@@ -158,7 +158,11 @@ function endQuiz() {
         //Save Highscore list and send user to the Highscore list
         fetch('http://localhost:3000/quizzes/1/highscores', configObj)
         .then(r => r.json())
-        .then(getHighscores)
+        // .then(getHighscores)
+        .then(highscore => {
+            const scoreData = highscore.data
+            new Highscore(scoreData) //Adds new highscore to scorelist
+        })
 
     }
     })
@@ -169,35 +173,46 @@ function endQuiz() {
 function getHighscores(e){
     fetch('http://localhost:3000/quizzes/1/highscores')
         .then(r =>r.json())
-        .then(renderHighscores)
+        // .then(renderHighscores)
+        .then(scores => {
+
+            scores.data.forEach(
+                item => {
+                    // console.log(item, item.attributes)
+                    let newScore = new Highscore(item, item.attributes)
+                    renderHighscores()
+                }
+            )
+        })
 }
 
 //display highscores
 function renderHighscores(arg){
-   const highscoreItems = arg["data"]
-    qBox.innerHTML = `
-        <div id="highscores">
-            <span>Try your luck or Head Home: <button type="submit" id="playBtn">Click Me and Play the Star Trek Quiz</button></span>
-            <span><button type="submit" id="homeBtn" onclick="goHome()">Go Back to Homepage</button></span>
-            <h2>Leaderboard</h2>
-            <p>How well did you do?</p>
-            <ol id="score-list">
-            </ol>
-        <button>
-        </div>
-    `
-    const scoreList = document.getElementById('score-list')
+//    const highscoreItems = arg["data"]
+    // qBox.innerHTML = `
+    //     <div id="highscores">
+    //         <span>Try your luck or Head Home: <button type="submit" id="playBtn">Click Me and Play the Star Trek Quiz</button></span>
+    //         <span><button type="submit" id="homeBtn" onclick="goHome()">Go Back to Homepage</button></span>
+    //         <h2>Leaderboard</h2>
+    //         <p>How well did you do?</p>
+    //         <ol id="score-list">
+    //         </ol>
+    //     <button>
+    //     </div>
+    // `
+    // const scoreList = document.getElementById('score-list')
 
-    highscoreItems.forEach(element => {
-        const li = document.createElement('li')
-        li.innerHTML = `
-            <span>${element.attributes.score}pts - ${element.attributes.name}</span>
-        `
-        scoreList.appendChild(li)
-    })
+    // highscoreItems.forEach(element => {
+    //     const li = document.createElement('li')
+    //     li.innerHTML = `
+    //         <span>${element.attributes.score}pts - ${element.attributes.name}</span>
+    //     `
+    //     scoreList.appendChild(li)
+    // })
 
-    const playBtn = document.getElementById('playBtn')
-    playBtn.addEventListener('click', startQuiz)
+    // const playBtn = document.getElementById('playBtn')
+    // playBtn.addEventListener('click', startQuiz)
+    new Highscore
 }
 
 //
