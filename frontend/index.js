@@ -7,7 +7,7 @@ const qBox = document.getElementById('quiz-container');
 
 const hud = document.getElementById('hud');
 const questionCounterText = document.getElementById('questionCounter');
-const scoreText = document.getElementById('score');
+const scoreText = document.getElementById('score-count');
 
 const quizID = 1;
 
@@ -128,7 +128,7 @@ function endQuiz() {
             <input type="text" name="nameInput" id="nameInput" placeholder="Enter Your Name Here"/>
             <input type="submit" id="saveScoreBtn" value="Save" disabled/>
             <button type="submit" id="playAgainBtn">Play Again?</button>
-            <button type="submit" id="home" onclick="home()">Homepage</button>
+            <button type="button" id="home" onclick="goHome()">Homepage</button>
 
         </form>
     `
@@ -158,6 +158,12 @@ function endQuiz() {
         //Save Highscore list and send user to the Highscore list
         fetch('http://localhost:3000/quizzes/1/highscores', configObj)
         .then(r => r.json())
+        // .then(getHighscores)
+        .then(highscore => {
+            new Leaderboard
+            const scoreData = highscore.data
+            new Highscore(scoreData) //Adds new highscore to scorelist
+        })
         .then(getHighscores)
 
     }
@@ -167,37 +173,26 @@ function endQuiz() {
 }
 //retrieve high scores
 function getHighscores(e){
+    new Leaderboard
     fetch('http://localhost:3000/quizzes/1/highscores')
         .then(r =>r.json())
-        .then(renderHighscores)
+        // .then(renderHighscores)
+        .then(scores => {
+            scores.data.forEach(
+                item => {
+                    // console.log(item)
+                    let scores = new Highscore(item)
+                    document.querySelector('#score-list').append(scores.buildLi())
+                    
+                    // renderHighscores()
+                }
+            )
+    })
 }
 
 //display highscores
 function renderHighscores(arg){
-   const highscoreItems = arg["data"]
-    qBox.innerHTML = `
-        <div id="highscores">
-            <span>Try your luck or Head Home: <button type="submit" id="playBtn">Click Me and Play the Star Trek Quiz</button></span>
-            <span><button type="submit" id="homeBtn" onclick="home()">Go Back to Homepage</button></span>
-            <h2>Leaderboard</h2>
-            <p>How well did you do?</p>
-            <ol id="score-list">
-            </ol>
-        <button>
-        </div>
-    `
-    const scoreList = document.getElementById('score-list')
-
-    highscoreItems.forEach(element => {
-        const li = document.createElement('li')
-        li.innerHTML = `
-            <span>${element.attributes.score}pts - ${element.attributes.name}</span>
-        `
-        scoreList.appendChild(li)
-    })
-
-    const playBtn = document.getElementById('playBtn')
-    playBtn.addEventListener('click', startQuiz)
+    new Highscore
 }
 
 //
@@ -217,7 +212,7 @@ function addQuestion() {
            <input type="number" name="answer" id="question-answer" defaultValue="0" min="0" max="1" required><br><br>
            <button type="submit" id="createQuestionBtn" value="Create">Create</button>
         </form>
-        <button type="submit" id="home" onclick="home()">Return Home</button>
+        <button type="submit" id="home" onclick="goHome()">Return Home</button>
         </div>
     `
 
@@ -277,7 +272,7 @@ function renderQuestion(arg){
         <div id="btns">
         <button class="edit" data-id="${arg.id}">Edit</button>
         <button class="delete" data-id="${arg.id}">Delete</button>
-        <button type="submit" id="home" onclick="home()">Return Home</button>
+        <button type="submit" id="home" onclick="goHome()">Return Home</button>
         </div>
     `
     const selectBtns = document.getElementById('btns')
@@ -365,14 +360,14 @@ function deleteQuestion(_e){
     //     .then(j => alert(j.message))
     //     .then(home)
 
-    const deleteNewQuestion = new DeleteQuestion;
+    const deleteNewQuestion = new Delete;
     deleteNewQuestion.delete(`http://localhost:3000/quizzes/1/questions/${questRender.dataset.id}`)
-        .then(home())
+        .then(goHome())
 }
 
 
 
 
-function home(e){
-    location.reload();
+function goHome(){
+    new HomeNavigation
 }

@@ -1,4 +1,4 @@
-class DeleteQuestion {
+class Delete {
     async delete(url) {
         const response = await fetch(url, {
             method: 'DELETE',
@@ -10,3 +10,4 @@ class DeleteQuestion {
         // return resData;
     }
 }
+
