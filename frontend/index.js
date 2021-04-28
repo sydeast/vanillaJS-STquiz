@@ -183,6 +183,7 @@ function getHighscores(e){
                     // console.log(item)
                     let scores = new Highscore(item)
                     document.querySelector('#score-list').append(scores.buildLi())
+                    
                     // renderHighscores()
                 }
             )
