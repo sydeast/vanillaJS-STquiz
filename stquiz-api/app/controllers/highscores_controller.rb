@@ -20,7 +20,11 @@ class HighscoresController < ApplicationController
         end
     end
 
-
+    def destroy
+        highscore = Highscore.find(params[:id])
+        highscore.destroy
+        render json: {message: "Successfully deleted your highscore"}
+    end
 
 
     private
