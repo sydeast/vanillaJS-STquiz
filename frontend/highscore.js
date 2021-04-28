@@ -7,6 +7,7 @@ class Highscore {
         this.score = attributes.score
         this.scoreLi = this.buildLi
         this.setEventListeners()
+
         Highscore.all.push
     }
 
@@ -31,17 +32,6 @@ class Highscore {
     // }
 
 
-    deleteHighscore(id){
-        const dtlBtn = document.createElement('button')
-        dtlBtn.id = 'delete-highscore'
-        dtlBtn.className = "delete-highscore"
-        dtlBtn.innerText = "Delete Your HighScore"
-        dtlBtn.addEventListener('click', () =>{
-                const dtlHS = new Delete;
-                dtlHS.delete(`http://localhost:3000/quizzes/1/highscores/${li.dataset.id}`)})
-        return dtlBtn
-
-    }
 
     setEventListeners(){
     const playBtn = document.getElementById('playBtn')

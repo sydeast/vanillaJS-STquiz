@@ -163,8 +163,10 @@ function endQuiz() {
             new Leaderboard
             const scoreData = highscore.data
             new Highscore(scoreData) //Adds new highscore to scorelist
+
         })
         .then(getHighscores)
+        .finally( () => setTimeout(renderHighscoreDelete, 1000))
 
     }
     })
@@ -183,7 +185,7 @@ function getHighscores(e){
                     // console.log(item)
                     let scores = new Highscore(item)
                     document.querySelector('#score-list').append(scores.buildLi())
-                    
+
                     // renderHighscores()
                 }
             )
@@ -194,6 +196,25 @@ function getHighscores(e){
 function renderHighscores(arg){
     new Highscore
 }
+
+function renderHighscoreDelete(){
+    document.getElementById("score-list").lastChild.appendChild(deleteHighscore())
+}
+
+function  deleteHighscore(){
+        const dtlBtn = document.createElement('input')
+        dtlBtn.id = document.getElementById("score-list").lastChild.dataset.id
+        dtlBtn.type = 'submit'
+        dtlBtn.className = 'delete-highscore'
+        dtlBtn.value = 'Delete Your Highscore'
+        dtlBtn.addEventListener('click', () =>{
+                const dtlHS = new Delete
+                document.getElementById("score-list").lastChild.remove()
+                dtlHS.delete(`http://localhost:3000/quizzes/1/highscores/${dtlBtn.id}`)})
+        return dtlBtn
+
+    }
+
 
 //
 function addQuestion() {
